@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "452051844093",
+    "firebase_url": "https://loginapp-1d444.firebaseio.com",
+    "project_id": "loginapp-1d444",
+    "storage_bucket": "loginapp-1d444.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:452051844093:android:e6053a0250267327b63794",
+        "android_client_info": {
+          "package_name": "com.example.crickguru"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "452051844093-cj8qmi3o5np47flj6tbti3hti8r07soq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUAurpL6Ojoj8EGC0m_NzNXfT3CvqtXfg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "452051844093-cj8qmi3o5np47flj6tbti3hti8r07soq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
