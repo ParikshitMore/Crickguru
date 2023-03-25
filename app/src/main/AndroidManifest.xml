@@ -28,10 +28,10 @@
             android:name=".Predictions"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".UpdateDialog"
             android:exported="false" />
         <activity
-            android:name=".UpdateDialog"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

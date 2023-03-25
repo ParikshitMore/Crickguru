@@ -1,11 +1,13 @@
 package com.example.crickguru;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -28,8 +30,11 @@ import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -52,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     FirebaseDatabase firebaseDatabase;
     FirebaseStorage storage;
     StorageReference storageReference;
-
+    String sCurrentVersion,sLatestVersion;
     // creating a variable for our Database
     // Reference for Firebase.
     DatabaseReference databaseReference, demoRef;
@@ -97,7 +102,35 @@ public class MainActivity extends AppCompatActivity {
 
         // Start loading the ad in the background.
         adView.loadAd(adRequest);
+////////////////////////////////////////////////////////////////////////// Adview /////////////////////////////////////
 
+        // Get latest version from play store
+        //new GetLatestVersion().execute();
+        // Get current version
+        sCurrentVersion=BuildConfig.VERSION_NAME;
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        // final String passcode1=editText.getText().toString().trim();
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String passc=dataSnapshot.child("Version").getValue().toString();
+                if (sCurrentVersion.equals(passc))
+                {
+                  //  Intent i=new Intent(getApplicationContext(), MainActivity.class);
+                  //  startActivity(i);
+                }
+                else if(!sCurrentVersion.equals(passc))
+                {
+                    updateAlertDialog();
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         next=(Button) findViewById(R.id.next);
 
@@ -199,6 +232,44 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+ /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ private void updateAlertDialog() {
+     // Initialize AlertDialog
+     AlertDialog.Builder builder=new AlertDialog.Builder(this);
+     // Set title
+     builder.setTitle(getResources().getString(R.string.app_name));
+     // set message
+     builder.setMessage("Update Available");
+     // Set non cancelable
+     builder.setCancelable(false);
+
+     // On update
+     builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+         @Override
+         public void onClick(DialogInterface dialogInterface, int i) {
+             // Open play store
+             startActivity(new Intent(Intent .ACTION_VIEW,
+                     Uri.parse("market://details?id"+getPackageName())));
+             // Dismiss alert dialog
+             dialogInterface.dismiss();
+         }
+     });
+
+     // on cancel
+    // builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+   //      @Override
+    //     public void onClick(DialogInterface dialogInterface, int i) {
+    //         // cancel alert dialog
+   //          dialogInterface.cancel();
+
+  //            }
+  //       });
+
+          // show alert dialog
+         builder.show();
+    }
+ ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private void chooseImage1() {
         Intent intent = new Intent();
